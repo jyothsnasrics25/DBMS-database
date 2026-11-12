@@ -1,5 +1,6 @@
-CREATE DATABASE supplier_2;
-USE supplier_2;
+DROP database supplier;
+CREATE DATABASE supplier;
+USE DATABASE supplier;
 
 CREATE TABLE Supplier (
     s_id INT PRIMARY KEY,
