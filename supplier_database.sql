@@ -164,3 +164,33 @@ WHERE c.cost = (
     WHERE c2.p_id = c.p_id
 );
 
+DELIMITER //
+
+CREATE TRIGGER check_cost
+BEFORE INSERT ON Catalog
+FOR EACH ROW
+BEGIN
+    IF NEW.cost < 1 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Cost cannot be below 1';
+    END IF;
+END //
+
+DELIMITER ;
+
+ALTER TABLE Catalog
+MODIFY cost DECIMAL(10,2) DEFAULT NULL;
+
+DELIMITER //
+
+CREATE TRIGGER default_cost
+BEFORE INSERT ON Catalog
+FOR EACH ROW
+BEGIN
+    IF NEW.cost IS NULL THEN
+        SET NEW.cost = 10;
+    END IF;
+END //
+
+DELIMITER ;
+
